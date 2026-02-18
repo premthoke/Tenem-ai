@@ -1,18 +1,21 @@
-const Chat = require("../models/chat");
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 
-// POST MESSAGE
-router.post("/", async (req, res) => {
+const Chat = require("../models/chat");
+const auth = require("../middleware/auth");
+
+// SEND MESSAGE (PROTECTED)
+router.post("/", auth, async (req, res) => {
   const { message, chatId } = req.body;
 
   try {
     let previousMessages = [];
 
-    // If chat exists → load history
+    // Load old messages if chat exists
     if (chatId) {
       const existingChat = await Chat.findById(chatId);
+
       if (existingChat) {
         previousMessages = existingChat.messages.map(m => ({
           role: m.role,
@@ -21,7 +24,7 @@ router.post("/", async (req, res) => {
       }
     }
 
-    // Send FULL conversation to AI
+    // Send full conversation to AI
     const response = await axios.post(
       "https://openrouter.ai/api/v1/chat/completions",
       {
@@ -45,7 +48,7 @@ router.post("/", async (req, res) => {
     let chat;
 
     if (chatId) {
-      // EXISTING CHAT
+      // EXISTING CHAT → append
       chat = await Chat.findById(chatId);
 
       chat.messages.push(
@@ -55,8 +58,9 @@ router.post("/", async (req, res) => {
 
       await chat.save();
     } else {
-      // NEW CHAT
+      // NEW CHAT → attach to logged-in user
       chat = await Chat.create({
+        userId: req.user.userId,
         messages: [
           { role: "user", content: message },
           { role: "assistant", content: aiReply.content },
@@ -72,13 +76,10 @@ router.post("/", async (req, res) => {
   }
 });
 
-
-// ⭐ ADD THIS PART (YOU MISSED THIS)
-
-// GET ALL CHATS
-router.get("/", async (req, res) => {
+// GET ALL CHATS (ONLY USER'S CHATS)
+router.get("/", auth, async (req, res) => {
   try {
-    const chats = await Chat.find().sort({ createdAt: -1 });
+    const chats = await Chat.find({ userId: req.user.userId }).sort({ createdAt: -1 });
     res.json(chats);
   } catch (err) {
     console.error(err);
@@ -86,10 +87,14 @@ router.get("/", async (req, res) => {
   }
 });
 
-// GET SINGLE CHAT
-router.get("/:id", async (req, res) => {
+// GET SINGLE CHAT (ONLY USER'S CHAT)
+router.get("/:id", auth, async (req, res) => {
   try {
-    const chat = await Chat.findById(req.params.id);
+    const chat = await Chat.findOne({
+      _id: req.params.id,
+      userId: req.user.userId,
+    });
+
     res.json(chat);
   } catch (err) {
     console.error(err);

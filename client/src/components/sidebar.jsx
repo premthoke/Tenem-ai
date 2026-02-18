@@ -5,9 +5,14 @@ function Sidebar({ onSelectChat, onNewChat, currentChatId }) {
   const [chats, setChats] = useState([]);
 
   const fetchChats = async () => {
-    const res = await axios.get("http://localhost:5000/api/chat");
-    setChats(res.data);
-  };
+  const res = await axios.get("http://localhost:5000/api/chat", {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+  setChats(res.data);
+};
+
 
   useEffect(() => {
     fetchChats();

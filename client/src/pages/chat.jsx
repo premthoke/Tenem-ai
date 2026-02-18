@@ -9,57 +9,79 @@ function Chat() {
   const [currentChatId, setCurrentChatId] = useState(null);
 
   const startNewChat = () => {
-  setMessages([]);
-  setCurrentChatId(null);
-};
+    setMessages([]);
+    setCurrentChatId(null);
+  };
 
   const sendMessage = async (text) => {
-  if (!text.trim()) return;
+    if (!text.trim()) return;
 
-  const userMessage = { role: "user", content: text };
-  setMessages((prev) => [...prev, userMessage]);
+    const token = localStorage.getItem("token");
 
-  try {
-    const res = await axios.post("http://localhost:5000/api/chat", {
-      message: text,
-      chatId: currentChatId,
-    });
+    const userMessage = { role: "user", content: text };
+    setMessages((prev) => [...prev, userMessage]);
 
-    const aiReply = {
-      role: "assistant",
-      content: res.data.aiReply.content,
-    };
-
-    setMessages((prev) => [...prev, aiReply]);
-
-    if (!currentChatId) {
-      setCurrentChatId(res.data.chatId);
-    }
-  } catch (err) {
-    console.error(err);
+    try {
+      const res = await axios.post(
+  "http://localhost:5000/api/chat",
+  {
+    message: text,
+    chatId: currentChatId,
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
   }
-};
+);
+
+
+      const aiReply = {
+        role: "assistant",
+        content: res.data.aiReply.content,
+      };
+
+      setMessages((prev) => [...prev, aiReply]);
+
+      if (!currentChatId) {
+        setCurrentChatId(res.data.chatId);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const openChat = async (chatId) => {
-    const res = await axios.get(`http://localhost:5000/api/chat/${chatId}`);
+    const token = localStorage.getItem("token");
+
+    const res = await axios.get(
+  `http://localhost:5000/api/chat/${chatId}`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  }
+);
+
+
     setMessages(res.data.messages);
     setCurrentChatId(chatId);
   };
 
   return (
-  <div className="h-screen w-screen flex bg-[#0b0f19]">
-    <Sidebar 
-      onSelectChat={openChat}
-      onNewChat={startNewChat}
-      currentChatId={currentChatId}
-    />
+    <div className="h-screen w-screen flex bg-[#0b0f19]">
+      <Sidebar
+        onSelectChat={openChat}
+        onNewChat={startNewChat}
+        currentChatId={currentChatId}
+      />
 
-    <div className="flex flex-col flex-1">
-      <ChatWindow messages={messages} />
-      <MessageInput onSend={sendMessage} />
+      <div className="flex flex-col flex-1">
+        <ChatWindow messages={messages} />
+        <MessageInput onSend={sendMessage} />
+      </div>
     </div>
-  </div>
-);
+  );
 }
 
 export default Chat;

@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const instance = axios.create({
-  baseURL: "https://tenem-ai.onrender.com",
+const axiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 instance.interceptors.request.use((config) => {

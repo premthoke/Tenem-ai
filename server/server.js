@@ -8,9 +8,13 @@ const authRoute = require("./routes/auth");
 
 const app = express();
 
-app.use(cors({
-  origin: "*"
-}));
+const cors = require("cors");
+app.use(
+  cors({
+    origin: "https://tenrem-ai.vercel.app",
+    credentials: true,
+  })
+);
 app.use(express.json());
 mongoose
   .connect(process.env.MONGO_URI)

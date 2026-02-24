@@ -5,6 +5,10 @@ const chatSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  title: {
+    type: String,
+    default: "New Chat",
+  },
   messages: [
     {
       role: String,

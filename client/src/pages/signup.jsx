@@ -7,10 +7,10 @@ function Signup() {
 
   const handleSignup = async () => {
     try {
-      await axios.post("/api/auth/signup", {
-        email,
-        password,
-      });
+     await axios.post(
+  "https://tenem-ai.onrender.com/api/auth/signup",
+  { email, password }
+);
 
       alert("Signup successful. Now login.");
       window.location.href = "/";

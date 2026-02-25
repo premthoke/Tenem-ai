@@ -11,26 +11,29 @@ function Chat() {
 
   // Load last chat automatically
   useEffect(() => {
-    const loadLastChat = async () => {
-      try {
-        const res = await axios.get("https://tenem-ai.onrender.com/api/chat", {
+  const loadLastChat = async () => {
+    try {
+      const res = await axios.get(
+        "https://tenem-ai.onrender.com/api/chat",
+        {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        });
-
-        if (res.data.length > 0) {
-          const lastChat = res.data[0];
-          setCurrentChatId(lastChat._id);
-          setMessages(lastChat.messages);
         }
-      } catch (err) {
-        console.error(err);
-      }
-    };
+      );
 
-    loadLastChat();
-  }, []);
+      if (res.data.length > 0) {
+        const lastChat = res.data[0];
+        setCurrentChatId(lastChat._id);
+        setMessages(lastChat.messages);
+      }
+    } catch (err) {
+      console.error("Failed to load chats:", err);
+    }
+  };
+
+  loadLastChat();
+}, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");

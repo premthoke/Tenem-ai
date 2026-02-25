@@ -6,7 +6,11 @@ function Sidebar({ onSelectChat, onNewChat, currentChatId }) {
 
   const fetchChats = async () => {
     try {
-      const res = await axios.get("/api/chat");
+      const res = await axios.get("https://tenem-ai.onrender.com/api/chat", {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+  },
+});
       setChats(res.data);
     } catch (err) {
       console.error("Fetch chats error:", err);

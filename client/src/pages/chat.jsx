@@ -4,31 +4,33 @@ import Sidebar from "../components/sidebar";
 import ChatWindow from "../components/chatwindow";
 import MessageInput from "../components/messageinput";
 
-
 function Chat() {
   const [isThinking, setIsThinking] = useState(false);
   const [messages, setMessages] = useState([]);
   const [currentChatId, setCurrentChatId] = useState(null);
 
+  // Load last chat automatically
   useEffect(() => {
-  const loadLastChat = async () => {
-    try {
-      const res = await axios.get("/api/chat");
+    const loadLastChat = async () => {
+      try {
+        const res = await axios.get("https://tenem-ai.onrender.com/api/chat", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
 
-      if (res.data.length > 0) {
-        const lastChat = res.data[0];
-
-        setCurrentChatId(lastChat._id);
-        setMessages(lastChat.messages);
+        if (res.data.length > 0) {
+          const lastChat = res.data[0];
+          setCurrentChatId(lastChat._id);
+          setMessages(lastChat.messages);
+        }
+      } catch (err) {
+        console.error(err);
       }
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    };
 
-  loadLastChat();
-}, []);
-  
+    loadLastChat();
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -40,62 +42,62 @@ function Chat() {
     setCurrentChatId(null);
   };
 
- const sendMessage = async (text) => {
-  if (!text.trim()) return;
+  // ✅ CORRECT CHAT FUNCTION
+  const sendMessage = async (text) => {
+    if (!text.trim()) return;
 
-  const userMessage = { role: "user", content: text };
-  setMessages((prev) => [...prev, userMessage]);
+    const userMessage = { role: "user", content: text };
+    setMessages((prev) => [...prev, userMessage]);
 
-  setIsThinking(true);
+    setIsThinking(true);
 
-  const response = await fetch("/api/auth/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-    body: JSON.stringify({
-      message: text,
-      chatId: currentChatId,
-    }),
-  });
+    try {
+      const res = await axios.post(
+        "https://tenem-ai.onrender.com/api/chat",
+        {
+          message: text,
+          chatId: currentChatId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
-  const reader = response.body.getReader();
-  const decoder = new TextDecoder("utf-8");
-
-  let aiText = "";
-
-  // create empty assistant bubble
-  setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
-
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-
-    const chunk = decoder.decode(value);
-    aiText += chunk;
-
-    setMessages((prev) => {
-      const updated = [...prev];
-      updated[updated.length - 1] = {
+      const aiReply = {
         role: "assistant",
-        content: aiText,
+        content: res.data.aiReply.content,
       };
-      return updated;
-    });
-  }
 
-  setIsThinking(false);
-};
+      setMessages((prev) => [...prev, aiReply]);
+
+      if (!currentChatId) {
+        setCurrentChatId(res.data.chatId);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+
+    setIsThinking(false);
+  };
+
   const openChat = async (chatId) => {
-    const res = await axios.get(`/api/chat/${chatId}`);
+    const res = await axios.get(
+      `https://tenem-ai.onrender.com/api/chat/${chatId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+
     setMessages(res.data.messages);
     setCurrentChatId(chatId);
   };
 
   return (
     <div className="h-screen w-screen flex bg-[#0b0f19] relative">
-
       <button
         onClick={handleLogout}
         className="absolute top-4 right-4 bg-red-500 px-4 py-1 rounded text-white hover:bg-red-400"
@@ -110,7 +112,7 @@ function Chat() {
       />
 
       <div className="flex flex-col flex-1">
-     <ChatWindow messages={messages} isThinking={isThinking} />
+        <ChatWindow messages={messages} isThinking={isThinking} />
         <MessageInput onSend={sendMessage} />
       </div>
     </div>

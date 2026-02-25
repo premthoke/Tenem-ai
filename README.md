@@ -1,210 +1,106 @@
-🚀 Tenem AI — ChatGPT Clone
+<div align="center"><h2>⚡ Tenem AI</h2></div>
+<div align="center">A Chat AI Web App</div>
+<p align="center"> Full-stack chat platform with authentication, real-time responses, and cloud deployment. </p> <p align="center"> <img src="https://img.shields.io/badge/React-Frontend-blue?style=for-the-badge&logo=react" /> <img src="https://img.shields.io/badge/Node.js-Backend-green?style=for-the-badge&logo=node.js" /> <img src="https://img.shields.io/badge/MongoDB-Database-darkgreen?style=for-the-badge&logo=mongodb" /> <img src="https://img.shields.io/badge/Vercel-Deployed-black?style=for-the-badge&logo=vercel" /> <img src="https://img.shields.io/badge/Render-API-purple?style=for-the-badge" /> </p>
 
-A full-stack AI chat application that allows users to sign up, log in, and interact with an AI assistant in real time.
-Built with a modern MERN-style architecture and deployed on free cloud platforms.
+---
+## 🚀 Live App
 
-🌐 Live Demo
+Frontend: https://tenem-ai.vercel.app  
+Backend API: https://tenem-ai.onrender.com  
 
-Frontend: https://tenem-ai.vercel.app
+---
 
-Backend API: https://tenem-ai.onrender.com
+## ✨ Features
 
-📌 Project Overview
+- 🔐 Secure authentication (JWT)
+- 💬 Real-time AI chat
+- 🧠 Conversation memory
+- 🧾 Chat history saving
+- 🔄 Resume previous chats
+- ⚡ Fast responsive UI
+- ☁️ Fully deployed (Frontend + Backend)
 
-Tenem AI is a ChatGPT-like web application where users can:
+---
 
-Create an account
+## 📸 Screenshots
 
-Log in securely using JWT authentication
+Login Page<img width="1918" height="1043" alt="Screenshot 2026-02-26 010452" src="https://github.com/user-attachments/assets/3591f98b-0b46-4e8d-b30f-d57029d11f14" />
+SignUp Page<img width="1918" height="1048" alt="Screenshot 2026-02-26 010502" src="https://github.com/user-attachments/assets/006a6961-7133-4430-9790-f9fa7189e768" />
+Interface<img width="1916" height="1054" alt="Screenshot 2026-02-26 010335" src="https://github.com/user-attachments/assets/959b0627-849e-4111-9bb3-ed796d25fee6" />
+Vercel(Frontend)<img width="1919" height="1033" alt="Screenshot 2026-02-26 010403" src="https://github.com/user-attachments/assets/9047bf6c-aa6f-433b-b151-e46e0e8012c4" />
+Render(Backend)<img width="1919" height="1033" alt="Screenshot 2026-02-26 010433" src="https://github.com/user-attachments/assets/3ea06b27-7070-448f-a36b-eba9b5ff30c6" />
 
-Start new AI conversations
+---
 
-View chat history
+## 🛠️ Tech Stack
 
-Continue previous chats
+**Frontend**
+- React (Vite)
+- Tailwind CSS
+- Axios
 
-Stream AI responses in real time
+**Backend**
+- Node.js
+- Express.js
+- MongoDB Atlas
+- JWT Authentication
 
-The goal of this project was to build a production-ready full-stack AI app using modern tools and deploy it online.
+**AI**
+- OpenRouter API
 
-🧠 Key Features
+**Deployment**
+- Vercel (Frontend)
+- Render (Backend)
 
-🔐 User Authentication (Signup/Login)
+---
 
-💬 Real-time AI Chat
+## ⚙️ Run Locally
 
-🧾 Chat history saving
+git clone https://github.com/premthoke/Tenem-ai.git  
+cd Tenem-ai  
 
-🔄 Resume previous conversations
+### Backend
 
-⚡ Streaming AI responses
+cd server  
+npm install  
+npm start  
 
-☁️ Cloud deployment (Frontend + Backend)
+Create `.env`
 
-📱 Responsive modern UI
+MONGO_URI=  
+JWT_SECRET=  
+OPENROUTER_API_KEY=  
 
-🛠️ Tech Stack
-Frontend
+### Frontend
 
-React (Vite)
+cd client  
+npm install  
+npm run dev  
 
-Tailwind CSS
+Create `.env`
 
-Axios
+VITE_API_URL=http://localhost:5000  
 
-Context API / Hooks
+---
 
-Backend
+## 🎯 Project Purpose
 
-Node.js
+This project demonstrates:
 
-Express.js
+- full-stack development  
+- authentication flow  
+- AI API integration  
+- database handling  
+- real-world deployment  
 
-MongoDB Atlas
+---
 
-JWT Authentication
+## 🔮 Future Improvements
 
-REST APIs
-
-AI Integration
-
-OpenRouter API
-
-Deployment
-
-Vercel → Frontend
-
-Render → Backend
-
-MongoDB Atlas → Database
-
-📷 Screenshots
-🏠 Landing Page
-
-🔐 Login Page
-
-📝 Signup Page
-
-💬 Chat Interface
-
-📚 Chat History Sidebar
-
-Add images inside /screenshots folder in your repo.
-
-⚙️ Installation & Setup
-1️⃣ Clone the repository
-git clone https://github.com/premthoke/Tenem-ai.git
-cd Tenem-ai
-2️⃣ Setup Backend
-cd server
-npm install
-npm start
-
-Create .env file:
-
-MONGO_URI=your_mongodb_uri
-JWT_SECRET=your_secret
-OPENROUTER_API_KEY=your_key
-3️⃣ Setup Frontend
-cd client
-npm install
-npm run dev
-
-Create .env:
-
-VITE_API_URL=http://localhost:5000
-🧪 How It Works
-
-User signs up/login
-
-JWT token stored in browser
-
-Chat messages sent to backend
-
-Backend:
-
-saves chat
-
-sends prompt to AI API
-
-streams response
-
-Frontend displays AI reply live
-
-🏗️ Project Architecture
-Client (React)
-   ↓
-API Requests
-   ↓
-Express Server
-   ↓
-MongoDB Atlas
-   ↓
-OpenRouter AI
-🚧 Challenges Solved
-
-Deployment issues with free hosting
-
-JWT auth handling across frontend/backend
-
-Chat persistence & retrieval
-
-CORS + production API routing
-
-Streaming AI responses in browser
-
-📈 Future Improvements
-
-Planned enhancements:
-
-🧠 Multi-model AI support
-
-📁 Export chat as PDF
-
-🌙 Theme switcher
-
-🧾 Chat rename & delete UX improvements
-
-🔔 Notifications
-
-👥 Team collaboration chats
-
-🧩 Plugin/tool support
-
-📊 Usage analytics dashboard
-
-This project will continue evolving as new features are implemented.
-
-👨‍💻 Author
-
-Prem Thoke
-Computer Engineering Student
-Full-Stack Developer
-
-GitHub: https://github.com/premthoke
-
-LinkedIn: (add later)
-
-⭐ Support
-
-If you like this project:
-
-Star the repository ⭐
-
-Fork it 🍴
-
-Share feedback 💬
-
-🏁 Final Note
-
-This project was built to demonstrate:
-
-full-stack development skills
-
-real AI integration
-
-production deployment ability
-
-debugging & system design thinking
-
-More advanced features will be added in future iterations as the project grows.
+- Better chat management (rename/delete polish)  
+- UI & animations upgrade  
+- Multi-model AI support  
+- Analytics dashboard  
+- Mobile optimization  
+
+---

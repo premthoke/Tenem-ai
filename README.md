@@ -17,7 +17,6 @@ Backend API: https://tenem-ai.onrender.com
 - 🧠 Conversation memory
 - 🧾 Chat history saving
 - 🔄 Resume previous chats
-- ⚡ Fast responsive UI
 - ☁️ Fully deployed (Frontend + Backend)
 
 ---
